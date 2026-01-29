@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Trophy, RotateCcw, Target, Zap } from 'lucide-react'
+import { RotateCcw, Target } from 'lucide-react'
 
 type GameState = 'setup' | 'toss' | 'waiting' | 'player-turn' | 'player-bowling' | 'computer-turn' | 'out' | 'game-over'
 type Innings = 'player' | 'computer'
@@ -33,10 +33,6 @@ export default function HandCricket() {
   const [showOutAnimation, setShowOutAnimation] = useState(false)
 
   const numbers = Array.from({ length: maxNumber + 1 }, (_, i) => i)
-
-  const startGame = () => {
-    startGameWithBattingOrder('player')
-  }
 
   const handleRangeSelection = (max: number) => {
     setMaxNumber(max)
