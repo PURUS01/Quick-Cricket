@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { RotateCcw, Target } from 'lucide-react'
+import { Trophy, RotateCcw, Target, Zap } from 'lucide-react'
 
 type GameState = 'setup' | 'toss' | 'waiting' | 'player-turn' | 'player-bowling' | 'computer-turn' | 'out' | 'game-over'
 type Innings = 'player' | 'computer'
@@ -33,6 +33,10 @@ export default function HandCricket() {
   const [showOutAnimation, setShowOutAnimation] = useState(false)
 
   const numbers = Array.from({ length: maxNumber + 1 }, (_, i) => i)
+
+  const startGame = () => {
+    startGameWithBattingOrder('player')
+  }
 
   const handleRangeSelection = (max: number) => {
     setMaxNumber(max)
@@ -409,33 +413,7 @@ export default function HandCricket() {
   }
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center px-4 py-20 bg-gradient-to-br from-green-600 via-emerald-500 to-teal-600 relative overflow-hidden">
-      {/* Animated Background Particles */}
-      <div className="fixed inset-0 overflow-hidden pointer-events-none z-0">
-        {[...Array(30)].map((_, i) => (
-          <motion.div
-            key={i}
-            className="absolute rounded-full"
-            style={{
-              width: Math.random() * 6 + 2,
-              height: Math.random() * 6 + 2,
-              left: `${Math.random() * 100}%`,
-              top: `${Math.random() * 100}%`,
-              background: `rgba(255, 255, 255, ${Math.random() * 0.3 + 0.1})`,
-            }}
-            animate={{
-              y: [0, Math.random() * 100 - 50, 0],
-              x: [0, Math.random() * 100 - 50, 0],
-              opacity: [0.1, 0.3, 0.1],
-            }}
-            transition={{
-              duration: Math.random() * 10 + 5,
-              repeat: Infinity,
-              ease: 'easeInOut',
-            }}
-          />
-        ))}
-      </div>
+    <div className="min-h-screen flex flex-col items-center justify-center px-4 py-20 bg-gradient-to-br from-green-500 via-emerald-400 to-teal-500">
       {/* Setup Screen - Number Range Selection */}
       {gameState === 'setup' && (
         <motion.div
@@ -482,10 +460,8 @@ export default function HandCricket() {
                   whileHover={{ scale: 1.1, y: -5 }}
                   whileTap={{ scale: 0.9 }}
                   onClick={() => handleRangeSelection(max)}
-                  className={`relative bg-gradient-to-br from-white/40 via-white/30 to-white/20 backdrop-blur-lg text-white text-3xl font-black rounded-2xl p-6 shadow-2xl transition-all aspect-square flex flex-col items-center justify-center border-2 ${
-                    maxNumber === max 
-                      ? 'ring-4 ring-yellow-400 bg-gradient-to-br from-yellow-400/60 to-orange-400/50 border-yellow-300 shadow-yellow-400/50' 
-                      : 'border-white/40 hover:border-white/60 hover:bg-white/50'
+                  className={`bg-white/30 backdrop-blur-md text-white text-3xl font-bold rounded-2xl p-6 shadow-xl transition-all aspect-square flex flex-col items-center justify-center ${
+                    maxNumber === max ? 'ring-4 ring-yellow-400 bg-yellow-400/40' : 'hover:bg-white/40'
                   }`}
                 >
                   <span className="text-4xl">{max}</span>
@@ -502,7 +478,7 @@ export default function HandCricket() {
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
                 onClick={() => handleRangeSelection(maxNumber)}
-                className="bg-gradient-to-r from-white to-green-50 text-green-700 px-12 py-4 rounded-full font-black text-xl shadow-2xl hover:shadow-green-400/50 transition-all border-2 border-green-300 hover:scale-105"
+                className="bg-white text-green-600 px-12 py-4 rounded-full font-bold text-xl shadow-lg hover:shadow-xl transition-all"
               >
                 Start Game with 0-{maxNumber}
               </motion.button>
@@ -543,41 +519,19 @@ export default function HandCricket() {
                     whileHover={{ scale: 1.1, y: -5 }}
                     whileTap={{ scale: 0.9 }}
                     onClick={() => handleTossChoice('heads')}
-                    className="bg-gradient-to-br from-yellow-400 via-orange-400 to-yellow-500 text-white text-3xl font-black rounded-2xl px-12 py-8 shadow-2xl hover:shadow-yellow-400/50 transition-all border-2 border-yellow-300 hover:scale-105 relative overflow-hidden group"
+                    className="bg-gradient-to-br from-yellow-400 to-orange-500 text-white text-3xl font-bold rounded-2xl px-12 py-8 shadow-xl hover:shadow-2xl transition-all border-2 border-yellow-300"
                   >
-                    <motion.div
-                      className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent"
-                      animate={{
-                        x: ['-100%', '100%'],
-                      }}
-                      transition={{
-                        duration: 2,
-                        repeat: Infinity,
-                        repeatDelay: 1,
-                      }}
-                    />
-                    <div className="text-6xl mb-2 relative z-10">🪙</div>
-                    <div className="relative z-10">Heads</div>
+                    <div className="text-6xl mb-2">🪙</div>
+                    <div>Heads</div>
                   </motion.button>
                   <motion.button
                     whileHover={{ scale: 1.1, y: -5 }}
                     whileTap={{ scale: 0.9 }}
                     onClick={() => handleTossChoice('tails')}
-                    className="bg-gradient-to-br from-blue-400 via-purple-400 to-blue-500 text-white text-3xl font-black rounded-2xl px-12 py-8 shadow-2xl hover:shadow-blue-400/50 transition-all border-2 border-blue-300 hover:scale-105 relative overflow-hidden group"
+                    className="bg-gradient-to-br from-blue-400 to-purple-500 text-white text-3xl font-bold rounded-2xl px-12 py-8 shadow-xl hover:shadow-2xl transition-all border-2 border-blue-300"
                   >
-                    <motion.div
-                      className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent"
-                      animate={{
-                        x: ['-100%', '100%'],
-                      }}
-                      transition={{
-                        duration: 2,
-                        repeat: Infinity,
-                        repeatDelay: 1,
-                      }}
-                    />
-                    <div className="text-6xl mb-2 relative z-10">🪙</div>
-                    <div className="relative z-10">Tails</div>
+                    <div className="text-6xl mb-2">🪙</div>
+                    <div>Tails</div>
                   </motion.button>
                 </div>
               </>
@@ -645,41 +599,19 @@ export default function HandCricket() {
                         whileHover={{ scale: 1.1, y: -5 }}
                         whileTap={{ scale: 0.9 }}
                         onClick={() => handlePlayerChoiceBattingBowling('bat')}
-                        className="relative bg-gradient-to-br from-green-500 via-emerald-500 to-green-600 text-white text-2xl font-black rounded-2xl px-10 py-6 shadow-2xl hover:shadow-green-400/50 transition-all border-2 border-green-400 hover:scale-105 overflow-hidden group"
+                        className="bg-gradient-to-br from-green-500 to-emerald-600 text-white text-2xl font-bold rounded-2xl px-10 py-6 shadow-xl hover:shadow-2xl transition-all border-2 border-green-400"
                       >
-                        <motion.div
-                          className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent"
-                          animate={{
-                            x: ['-100%', '100%'],
-                          }}
-                          transition={{
-                            duration: 1.5,
-                            repeat: Infinity,
-                            repeatDelay: 0.5,
-                          }}
-                        />
-                        <div className="text-5xl mb-2 relative z-10">🏏</div>
-                        <div className="relative z-10">Bat First</div>
+                        <div className="text-5xl mb-2">🏏</div>
+                        <div>Bat First</div>
                       </motion.button>
                       <motion.button
                         whileHover={{ scale: 1.1, y: -5 }}
                         whileTap={{ scale: 0.9 }}
                         onClick={() => handlePlayerChoiceBattingBowling('bowl')}
-                        className="relative bg-gradient-to-br from-red-500 via-pink-500 to-red-600 text-white text-2xl font-black rounded-2xl px-10 py-6 shadow-2xl hover:shadow-red-400/50 transition-all border-2 border-red-400 hover:scale-105 overflow-hidden group"
+                        className="bg-gradient-to-br from-red-500 to-pink-600 text-white text-2xl font-bold rounded-2xl px-10 py-6 shadow-xl hover:shadow-2xl transition-all border-2 border-red-400"
                       >
-                        <motion.div
-                          className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent"
-                          animate={{
-                            x: ['-100%', '100%'],
-                          }}
-                          transition={{
-                            duration: 1.5,
-                            repeat: Infinity,
-                            repeatDelay: 0.5,
-                          }}
-                        />
-                        <div className="text-5xl mb-2 relative z-10">🎯</div>
-                        <div className="relative z-10">Bowl First</div>
+                        <div className="text-5xl mb-2">🎯</div>
+                        <div>Bowl First</div>
                       </motion.button>
                     </div>
                   </motion.div>
@@ -695,109 +627,53 @@ export default function HandCricket() {
         <motion.div
           initial={{ opacity: 0, y: -50 }}
           animate={{ opacity: 1, y: 0 }}
-          className="bg-gradient-to-br from-white/25 via-white/20 to-white/15 backdrop-blur-xl rounded-3xl p-8 mb-8 shadow-2xl w-full max-w-4xl border border-white/30 relative z-10"
+          className="bg-white/20 backdrop-blur-md rounded-3xl p-8 mb-8 shadow-2xl w-full max-w-4xl"
         >
         <div className="grid grid-cols-2 gap-6 mb-4">
-          <motion.div 
-            className={`text-center p-6 rounded-2xl transition-all ${
-              currentInnings === 'player' 
-                ? 'bg-gradient-to-br from-green-400/40 to-emerald-500/40 ring-4 ring-green-300/50 shadow-lg' 
-                : 'bg-white/10'
-            }`}
-            animate={currentInnings === 'player' ? {
-              boxShadow: [
-                '0 0 20px rgba(74, 222, 128, 0.3)',
-                '0 0 30px rgba(74, 222, 128, 0.5)',
-                '0 0 20px rgba(74, 222, 128, 0.3)',
-              ],
-            } : {}}
-            transition={{ duration: 2, repeat: Infinity }}
-          >
-            <h3 className="text-2xl font-bold text-white mb-2 drop-shadow-lg">You</h3>
+          <div className="text-center">
+            <h3 className="text-2xl font-bold text-white mb-2">You</h3>
             <motion.div
               key={playerScore}
-              initial={{ scale: 0, rotate: -180 }}
-              animate={{ scale: 1, rotate: 0 }}
-              transition={{ type: 'spring', stiffness: 200 }}
-              className="text-7xl font-black text-white drop-shadow-2xl mb-2"
-              style={{ 
-                textShadow: '0 0 20px rgba(255, 255, 255, 0.5)',
-                background: 'linear-gradient(135deg, #ffffff 0%, #e0f2fe 100%)',
-                WebkitBackgroundClip: 'text',
-                WebkitTextFillColor: 'transparent',
-                backgroundClip: 'text',
-              }}
+              initial={{ scale: 0 }}
+              animate={{ scale: 1 }}
+              className="text-6xl font-bold text-white"
             >
               {playerScore}
             </motion.div>
-            <div className="text-white/90 mt-3">
+            <div className="text-white/80 mt-2">
               {playerRuns.length > 0 && (
                 <div className="flex flex-wrap gap-2 justify-center">
                   {playerRuns.map((run, idx) => (
-                    <motion.span
-                      key={idx}
-                      initial={{ scale: 0 }}
-                      animate={{ scale: 1 }}
-                      transition={{ delay: idx * 0.1 }}
-                      className="bg-gradient-to-r from-green-400/50 to-emerald-500/50 px-3 py-1 rounded-lg font-semibold border border-white/30 shadow-md"
-                    >
+                    <span key={idx} className="bg-white/30 px-2 py-1 rounded">
                       {run}
-                    </motion.span>
+                    </span>
                   ))}
                 </div>
               )}
             </div>
-          </motion.div>
-          <motion.div 
-            className={`text-center p-6 rounded-2xl transition-all ${
-              currentInnings === 'computer' 
-                ? 'bg-gradient-to-br from-blue-400/40 to-purple-500/40 ring-4 ring-blue-300/50 shadow-lg' 
-                : 'bg-white/10'
-            }`}
-            animate={currentInnings === 'computer' ? {
-              boxShadow: [
-                '0 0 20px rgba(96, 165, 250, 0.3)',
-                '0 0 30px rgba(96, 165, 250, 0.5)',
-                '0 0 20px rgba(96, 165, 250, 0.3)',
-              ],
-            } : {}}
-            transition={{ duration: 2, repeat: Infinity }}
-          >
-            <h3 className="text-2xl font-bold text-white mb-2 drop-shadow-lg">Computer</h3>
+          </div>
+          <div className="text-center">
+            <h3 className="text-2xl font-bold text-white mb-2">Computer</h3>
             <motion.div
               key={computerScore}
-              initial={{ scale: 0, rotate: 180 }}
-              animate={{ scale: 1, rotate: 0 }}
-              transition={{ type: 'spring', stiffness: 200 }}
-              className="text-7xl font-black text-white drop-shadow-2xl mb-2"
-              style={{ 
-                textShadow: '0 0 20px rgba(255, 255, 255, 0.5)',
-                background: 'linear-gradient(135deg, #ffffff 0%, #e0f2fe 100%)',
-                WebkitBackgroundClip: 'text',
-                WebkitTextFillColor: 'transparent',
-                backgroundClip: 'text',
-              }}
+              initial={{ scale: 0 }}
+              animate={{ scale: 1 }}
+              className="text-6xl font-bold text-white"
             >
               {computerScore}
             </motion.div>
-            <div className="text-white/90 mt-3">
+            <div className="text-white/80 mt-2">
               {computerRuns.length > 0 && (
                 <div className="flex flex-wrap gap-2 justify-center">
                   {computerRuns.map((run, idx) => (
-                    <motion.span
-                      key={idx}
-                      initial={{ scale: 0 }}
-                      animate={{ scale: 1 }}
-                      transition={{ delay: idx * 0.1 }}
-                      className="bg-gradient-to-r from-blue-400/50 to-purple-500/50 px-3 py-1 rounded-lg font-semibold border border-white/30 shadow-md"
-                    >
+                    <span key={idx} className="bg-white/30 px-2 py-1 rounded">
                       {run}
-                    </motion.span>
+                    </span>
                   ))}
                 </div>
               )}
             </div>
-          </motion.div>
+          </div>
         </div>
         
         {target > 0 && (
@@ -854,19 +730,9 @@ export default function HandCricket() {
             exit={{ opacity: 0, scale: 0.8 }}
             className="text-center mb-8"
           >
-            <motion.h2 
-              className="text-5xl font-black text-white mb-4 drop-shadow-2xl"
-              animate={{
-                textShadow: [
-                  '0 0 20px rgba(255, 255, 255, 0.5)',
-                  '0 0 30px rgba(74, 222, 128, 0.8)',
-                  '0 0 20px rgba(255, 255, 255, 0.5)',
-                ],
-              }}
-              transition={{ duration: 2, repeat: Infinity }}
-            >
-              Your Turn - Choose a Number! ⚡
-            </motion.h2>
+            <h2 className="text-4xl font-bold text-white mb-4 drop-shadow-lg">
+              Your Turn - Choose a Number!
+            </h2>
           </motion.div>
         )}
 
@@ -878,20 +744,10 @@ export default function HandCricket() {
             exit={{ opacity: 0, scale: 0.8 }}
             className="text-center mb-8"
           >
-            <motion.h2 
-              className="text-5xl font-black text-white mb-4 drop-shadow-2xl"
-              animate={{
-                textShadow: [
-                  '0 0 20px rgba(255, 255, 255, 0.5)',
-                  '0 0 30px rgba(239, 68, 68, 0.8)',
-                  '0 0 20px rgba(255, 255, 255, 0.5)',
-                ],
-              }}
-              transition={{ duration: 2, repeat: Infinity }}
-            >
+            <h2 className="text-4xl font-bold text-white mb-4 drop-shadow-lg">
               Your Turn to Bowl! 🎯
-            </motion.h2>
-            <p className="text-xl text-white/90 font-semibold">
+            </h2>
+            <p className="text-xl text-white/80">
               Choose a number to bowl and try to get the computer out!
             </p>
           </motion.div>
@@ -962,17 +818,17 @@ export default function HandCricket() {
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className={`backdrop-blur-lg rounded-2xl p-6 mb-8 text-center border shadow-xl ${
+          className={`backdrop-blur-md rounded-2xl p-6 mb-8 text-center ${
             showCelebration && (celebrationType === '4' || celebrationType === '6') 
-              ? 'bg-gradient-to-r from-yellow-400/50 to-orange-400/50 border-4 border-yellow-300' 
+              ? 'bg-yellow-400/40 border-4 border-yellow-300' 
               : showCelebration && celebrationType === 'target'
-              ? 'bg-gradient-to-r from-green-400/50 to-emerald-500/50 border-4 border-green-300'
+              ? 'bg-green-400/40 border-4 border-green-300'
               : showCelebration && celebrationType === '50'
-              ? 'bg-gradient-to-r from-yellow-400/50 to-amber-400/50 border-4 border-yellow-300'
-              : 'bg-gradient-to-br from-white/35 via-white/30 to-white/25 border-white/40'
+              ? 'bg-yellow-400/40 border-4 border-yellow-300'
+              : 'bg-white/30'
           }`}
         >
-          <p className={`text-xl font-bold ${
+          <p className={`text-xl font-semibold ${
             showCelebration && (celebrationType === '4' || celebrationType === '6' || celebrationType === '50')
               ? 'text-yellow-100' 
               : showCelebration && celebrationType === 'target'
@@ -998,30 +854,12 @@ export default function HandCricket() {
           {numbers.map((num) => (
             <motion.button
               key={num}
-              whileHover={{ 
-                scale: 1.15, 
-                y: -8,
-                boxShadow: '0 10px 30px rgba(255, 255, 255, 0.4)',
-              }}
-              whileTap={{ scale: 0.95 }}
+              whileHover={{ scale: 1.1, y: -5 }}
+              whileTap={{ scale: 0.9 }}
               onClick={() => handlePlayerChoice(num)}
-              className="relative bg-gradient-to-br from-white/40 via-white/30 to-white/20 backdrop-blur-lg text-white text-5xl font-black rounded-2xl p-8 shadow-2xl transition-all aspect-square flex items-center justify-center border-2 border-white/40 overflow-hidden group"
+              className="bg-white/30 backdrop-blur-md text-white text-4xl font-bold rounded-2xl p-8 shadow-xl hover:bg-white/40 transition-all aspect-square flex items-center justify-center"
             >
-              {/* Glow effect */}
-              <motion.div
-                className="absolute inset-0 bg-gradient-to-br from-green-300/20 to-emerald-400/20 opacity-0 group-hover:opacity-100 transition-opacity"
-                animate={{
-                  background: [
-                    'linear-gradient(135deg, rgba(74, 222, 128, 0.2), rgba(16, 185, 129, 0.2))',
-                    'linear-gradient(135deg, rgba(16, 185, 129, 0.3), rgba(74, 222, 128, 0.3))',
-                    'linear-gradient(135deg, rgba(74, 222, 128, 0.2), rgba(16, 185, 129, 0.2))',
-                  ],
-                }}
-                transition={{ duration: 2, repeat: Infinity }}
-              />
-              <span className="relative z-10 drop-shadow-lg" style={{ textShadow: '0 2px 10px rgba(0, 0, 0, 0.3)' }}>
-                {num}
-              </span>
+              {num}
             </motion.button>
           ))}
         </motion.div>
@@ -1043,30 +881,12 @@ export default function HandCricket() {
           {numbers.map((num) => (
             <motion.button
               key={num}
-              whileHover={{ 
-                scale: 1.15, 
-                y: -8,
-                boxShadow: '0 10px 30px rgba(239, 68, 68, 0.5)',
-              }}
-              whileTap={{ scale: 0.95 }}
+              whileHover={{ scale: 1.1, y: -5 }}
+              whileTap={{ scale: 0.9 }}
               onClick={() => handlePlayerBowling(num)}
-              className="relative bg-gradient-to-br from-red-400/50 via-red-500/40 to-pink-500/30 backdrop-blur-lg text-white text-5xl font-black rounded-2xl p-8 shadow-2xl transition-all aspect-square flex items-center justify-center border-2 border-red-300/60 overflow-hidden group"
+              className="bg-red-400/40 backdrop-blur-md text-white text-4xl font-bold rounded-2xl p-8 shadow-xl hover:bg-red-400/50 transition-all aspect-square flex items-center justify-center border-2 border-red-300/50"
             >
-              {/* Glow effect */}
-              <motion.div
-                className="absolute inset-0 bg-gradient-to-br from-red-300/30 to-pink-400/30 opacity-0 group-hover:opacity-100 transition-opacity"
-                animate={{
-                  background: [
-                    'linear-gradient(135deg, rgba(239, 68, 68, 0.3), rgba(236, 72, 153, 0.3))',
-                    'linear-gradient(135deg, rgba(236, 72, 153, 0.4), rgba(239, 68, 68, 0.4))',
-                    'linear-gradient(135deg, rgba(239, 68, 68, 0.3), rgba(236, 72, 153, 0.3))',
-                  ],
-                }}
-                transition={{ duration: 2, repeat: Infinity }}
-              />
-              <span className="relative z-10 drop-shadow-lg" style={{ textShadow: '0 2px 10px rgba(0, 0, 0, 0.3)' }}>
-                {num}
-              </span>
+              {num}
             </motion.button>
           ))}
         </motion.div>
@@ -1075,28 +895,20 @@ export default function HandCricket() {
       {/* Hand Display */}
       {gameState !== 'setup' && gameState !== 'toss' && (selectedNumber !== null || computerChoice !== null) && (
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="flex gap-12 mb-8 relative z-10"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          className="flex gap-12 mb-8"
         >
           {selectedNumber !== null && (
             <motion.div
               initial={{ scale: 0, rotate: -180 }}
               animate={{ scale: 1, rotate: 0 }}
-              transition={{ type: 'spring', stiffness: 200 }}
-              className="text-center bg-gradient-to-br from-green-400/30 to-emerald-500/30 backdrop-blur-lg rounded-2xl p-6 border-2 border-green-300/50 shadow-xl"
+              className="text-center"
             >
-              <motion.div 
-                className="text-7xl mb-2"
-                animate={{ 
-                  scale: [1, 1.2, 1],
-                  rotate: [0, 10, -10, 0]
-                }}
-                transition={{ duration: 1, repeat: Infinity }}
-              >
+              <div className="text-6xl mb-2">
                 {gameState === 'player-bowling' || (gameState === 'waiting' && currentInnings === 'computer') ? '🎯' : '✋'}
-              </motion.div>
-              <div className="text-3xl font-black text-white drop-shadow-lg">
+              </div>
+              <div className="text-3xl font-bold text-white">
                 {gameState === 'player-bowling' || (gameState === 'waiting' && currentInnings === 'computer') 
                   ? `You bowled: ${selectedNumber}` 
                   : `You: ${selectedNumber}`}
@@ -1107,20 +919,10 @@ export default function HandCricket() {
             <motion.div
               initial={{ scale: 0, rotate: 180 }}
               animate={{ scale: 1, rotate: 0 }}
-              transition={{ type: 'spring', stiffness: 200 }}
-              className="text-center bg-gradient-to-br from-blue-400/30 to-purple-500/30 backdrop-blur-lg rounded-2xl p-6 border-2 border-blue-300/50 shadow-xl"
+              className="text-center"
             >
-              <motion.div 
-                className="text-7xl mb-2"
-                animate={{ 
-                  scale: [1, 1.2, 1],
-                  rotate: [0, -10, 10, 0]
-                }}
-                transition={{ duration: 1, repeat: Infinity, delay: 0.5 }}
-              >
-                🤖
-              </motion.div>
-              <div className="text-3xl font-black text-white drop-shadow-lg">
+              <div className="text-6xl mb-2">🤖</div>
+              <div className="text-3xl font-bold text-white">
                 {gameState === 'player-bowling' || (gameState === 'waiting' && currentInnings === 'computer')
                   ? `Comp batted: ${computerChoice}`
                   : `Comp: ${computerChoice}`}
@@ -1656,7 +1458,7 @@ export default function HandCricket() {
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
           onClick={resetGame}
-          className="bg-gradient-to-r from-white/30 to-white/20 backdrop-blur-lg text-white px-6 py-3 rounded-full font-bold flex items-center gap-2 hover:bg-white/40 transition-all shadow-xl border border-white/30 hover:scale-105"
+          className="bg-white/20 backdrop-blur-md text-white px-6 py-3 rounded-full font-semibold flex items-center gap-2 hover:bg-white/30 transition-all shadow-lg"
         >
           <RotateCcw className="w-5 h-5" />
           Reset Game
