@@ -409,13 +409,35 @@ export default function HandCricket() {
   }
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center px-4 py-20 bg-gradient-to-br from-green-500 via-emerald-400 to-teal-500">
+    <div className="min-h-screen flex flex-col items-center justify-center px-2 sm:px-4 py-8 sm:py-12 md:py-20 bg-gradient-to-br from-green-500 via-emerald-400 to-teal-500">
+      {/* Floating particles */}
+      <div className="fixed inset-0 overflow-hidden pointer-events-none z-0">
+        {[...Array(15)].map((_, i) => (
+          <motion.div
+            key={i}
+            className="absolute w-2 sm:w-3 h-2 sm:h-3 bg-white/20 rounded-full"
+            initial={{
+              x: Math.random() * window.innerWidth,
+              y: Math.random() * window.innerHeight,
+            }}
+            animate={{
+              y: [null, Math.random() * window.innerHeight],
+              x: [null, Math.random() * window.innerWidth],
+            }}
+            transition={{
+              duration: Math.random() * 8 + 5,
+              repeat: Infinity,
+              repeatType: 'reverse',
+            }}
+          />
+        ))}
+      </div>
       {/* Setup Screen - Number Range Selection */}
       {gameState === 'setup' && (
         <motion.div
           initial={{ opacity: 0, scale: 0.8 }}
           animate={{ opacity: 1, scale: 1 }}
-          className="w-full max-w-4xl"
+          className="w-full max-w-4xl relative z-10"
         >
           <motion.div
             initial={{ y: -50 }}
@@ -425,14 +447,14 @@ export default function HandCricket() {
             <motion.div
               animate={{ rotate: [0, 10, -10, 0] }}
               transition={{ duration: 3, repeat: Infinity, repeatDelay: 1 }}
-              className="text-8xl mb-6"
+              className="text-5xl sm:text-6xl md:text-8xl mb-4 sm:mb-6"
             >
               🏏
             </motion.div>
-            <h1 className="text-6xl md:text-8xl font-bold text-white mb-4 drop-shadow-2xl">
+            <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-8xl font-bold text-white mb-2 sm:mb-4 drop-shadow-2xl">
               Quick Cricket
             </h1>
-            <p className="text-2xl text-white/90 mb-8">
+            <p className="text-lg sm:text-xl md:text-2xl text-white/90 mb-4 sm:mb-6 md:mb-8">
               Select Number Range
             </p>
           </motion.div>
@@ -440,41 +462,41 @@ export default function HandCricket() {
           <motion.div
             initial={{ opacity: 0, y: 50 }}
             animate={{ opacity: 1, y: 0 }}
-            className="bg-white/20 backdrop-blur-md rounded-3xl p-8 shadow-2xl"
+            className="bg-white/20 backdrop-blur-md rounded-2xl sm:rounded-3xl p-4 sm:p-6 md:p-8 shadow-2xl w-full"
           >
-            <h2 className="text-3xl font-bold text-white mb-6 text-center">
+            <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-white mb-4 sm:mb-6 text-center">
               Choose Maximum Number
             </h2>
-            <p className="text-white/80 text-center mb-8 text-lg">
+            <p className="text-white/80 text-center mb-4 sm:mb-6 md:mb-8 text-sm sm:text-base md:text-lg px-2">
               Select the highest number you can choose (0 to your selected number)
             </p>
             
-            <div className="grid grid-cols-3 md:grid-cols-5 gap-4 mb-8">
+            <div className="grid grid-cols-4 sm:grid-cols-4 md:grid-cols-5 gap-2 sm:gap-3 md:gap-4 mb-4 sm:mb-6 md:mb-8">
               {[3, 4, 5, 6, 7, 8, 9, 10].map((max) => (
                 <motion.button
                   key={max}
                   whileHover={{ scale: 1.1, y: -5 }}
                   whileTap={{ scale: 0.9 }}
                   onClick={() => handleRangeSelection(max)}
-                  className={`bg-white/30 backdrop-blur-md text-white text-3xl font-bold rounded-2xl p-6 shadow-xl transition-all aspect-square flex flex-col items-center justify-center ${
-                    maxNumber === max ? 'ring-4 ring-yellow-400 bg-yellow-400/40' : 'hover:bg-white/40'
+                  className={`bg-white/30 backdrop-blur-md text-white text-xl sm:text-2xl md:text-3xl font-bold rounded-xl sm:rounded-2xl p-3 sm:p-4 md:p-6 shadow-xl transition-all aspect-square flex flex-col items-center justify-center ${
+                    maxNumber === max ? 'ring-2 sm:ring-4 ring-yellow-400 bg-yellow-400/40' : 'hover:bg-white/40'
                   }`}
                 >
-                  <span className="text-4xl">{max}</span>
-                  <span className="text-sm mt-1">0-{max}</span>
+                  <span className="text-2xl sm:text-3xl md:text-4xl">{max}</span>
+                  <span className="text-xs sm:text-sm mt-0.5 sm:mt-1">0-{max}</span>
                 </motion.button>
               ))}
             </div>
 
             <div className="text-center">
-              <p className="text-white/70 text-sm mb-4">
+              <p className="text-white/70 text-xs sm:text-sm mb-3 sm:mb-4">
                 Current Selection: <span className="font-bold text-white">0 to {maxNumber}</span>
               </p>
               <motion.button
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
                 onClick={() => handleRangeSelection(maxNumber)}
-                className="bg-white text-green-600 px-12 py-4 rounded-full font-bold text-xl shadow-lg hover:shadow-xl transition-all"
+                className="bg-white text-green-600 px-6 sm:px-8 md:px-12 py-3 sm:py-3.5 md:py-4 rounded-full font-bold text-base sm:text-lg md:text-xl shadow-lg hover:shadow-xl transition-all w-full sm:w-auto"
               >
                 Start Game with 0-{maxNumber}
               </motion.button>
@@ -488,17 +510,17 @@ export default function HandCricket() {
         <motion.div
           initial={{ opacity: 0, scale: 0.8 }}
           animate={{ opacity: 1, scale: 1 }}
-          className="w-full max-w-4xl"
+          className="w-full max-w-4xl relative z-10"
         >
           <motion.div
             initial={{ y: -50 }}
             animate={{ y: 0 }}
-            className="text-center mb-12"
+            className="text-center mb-6 sm:mb-8 md:mb-12"
           >
-            <h1 className="text-5xl md:text-7xl font-bold text-white mb-4 drop-shadow-2xl">
+            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-7xl font-bold text-white mb-2 sm:mb-4 drop-shadow-2xl">
               Coin Toss
             </h1>
-            <p className="text-xl text-white/90 mb-8">
+            <p className="text-base sm:text-lg md:text-xl text-white/90 mb-4 sm:mb-6 md:mb-8 px-2">
               Choose Heads or Tails to decide who bats first
             </p>
           </motion.div>
@@ -506,27 +528,27 @@ export default function HandCricket() {
           <motion.div
             initial={{ opacity: 0, y: 50 }}
             animate={{ opacity: 1, y: 0 }}
-            className="bg-white/20 backdrop-blur-md rounded-3xl p-8 shadow-2xl"
+            className="bg-white/20 backdrop-blur-md rounded-2xl sm:rounded-3xl p-4 sm:p-6 md:p-8 shadow-2xl w-full"
           >
             {!tossResult ? (
               <>
-                <div className="flex justify-center gap-6 mb-8">
+                <div className="flex flex-col sm:flex-row justify-center gap-3 sm:gap-4 md:gap-6 mb-4 sm:mb-6 md:mb-8">
                   <motion.button
                     whileHover={{ scale: 1.1, y: -5 }}
                     whileTap={{ scale: 0.9 }}
                     onClick={() => handleTossChoice('heads')}
-                    className="bg-gradient-to-br from-yellow-400 to-orange-500 text-white text-3xl font-bold rounded-2xl px-12 py-8 shadow-xl hover:shadow-2xl transition-all border-2 border-yellow-300"
+                    className="bg-gradient-to-br from-yellow-400 to-orange-500 text-white text-xl sm:text-2xl md:text-3xl font-bold rounded-xl sm:rounded-2xl px-6 sm:px-8 md:px-12 py-5 sm:py-6 md:py-8 shadow-xl hover:shadow-2xl transition-all border-2 border-yellow-300 w-full sm:w-auto"
                   >
-                    <div className="text-6xl mb-2">🪙</div>
+                    <div className="text-4xl sm:text-5xl md:text-6xl mb-1 sm:mb-2">🪙</div>
                     <div>Heads</div>
                   </motion.button>
                   <motion.button
                     whileHover={{ scale: 1.1, y: -5 }}
                     whileTap={{ scale: 0.9 }}
                     onClick={() => handleTossChoice('tails')}
-                    className="bg-gradient-to-br from-blue-400 to-purple-500 text-white text-3xl font-bold rounded-2xl px-12 py-8 shadow-xl hover:shadow-2xl transition-all border-2 border-blue-300"
+                    className="bg-gradient-to-br from-blue-400 to-purple-500 text-white text-xl sm:text-2xl md:text-3xl font-bold rounded-xl sm:rounded-2xl px-6 sm:px-8 md:px-12 py-5 sm:py-6 md:py-8 shadow-xl hover:shadow-2xl transition-all border-2 border-blue-300 w-full sm:w-auto"
                   >
-                    <div className="text-6xl mb-2">🪙</div>
+                    <div className="text-4xl sm:text-5xl md:text-6xl mb-1 sm:mb-2">🪙</div>
                     <div>Tails</div>
                   </motion.button>
                 </div>
@@ -538,9 +560,9 @@ export default function HandCricket() {
                   initial={{ rotateY: 0 }}
                   animate={{ rotateY: [0, 1800, 3600] }}
                   transition={{ duration: 2, ease: 'easeInOut' }}
-                  className="mb-8"
+                  className="mb-4 sm:mb-6 md:mb-8"
                 >
-                  <div className="text-9xl">
+                  <div className="text-6xl sm:text-7xl md:text-8xl lg:text-9xl">
                     {tossResult === 'heads' ? '🪙' : '🪙'}
                   </div>
                 </motion.div>
@@ -550,12 +572,12 @@ export default function HandCricket() {
                   initial={{ opacity: 0, scale: 0.5 }}
                   animate={{ opacity: 1, scale: 1 }}
                   transition={{ delay: 1 }}
-                  className="mb-6"
+                  className="mb-4 sm:mb-6"
                 >
-                  <h2 className="text-4xl font-bold text-white mb-4">
+                  <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-white mb-2 sm:mb-4">
                     {tossResult === 'heads' ? 'Heads!' : 'Tails!'}
                   </h2>
-                  <p className="text-2xl text-white/90 mb-4">
+                  <p className="text-lg sm:text-xl md:text-2xl text-white/90 mb-2 sm:mb-4">
                     You chose: <span className="font-bold">{playerTossChoice}</span>
                   </p>
                 </motion.div>
@@ -566,13 +588,13 @@ export default function HandCricket() {
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: 1.5 }}
-                    className="bg-gradient-to-r from-green-400 to-emerald-500 rounded-2xl p-6 mb-4"
+                    className="bg-gradient-to-r from-green-400 to-emerald-500 rounded-xl sm:rounded-2xl p-4 sm:p-5 md:p-6 mb-3 sm:mb-4"
                   >
-                    <h3 className="text-3xl font-bold text-white mb-2">
+                    <h3 className="text-xl sm:text-2xl md:text-3xl font-bold text-white mb-1 sm:mb-2">
                       {tossWinner === 'player' ? '🎉 You Won the Toss!' : 'Computer Won the Toss!'}
                     </h3>
                     {tossWinner === 'computer' && (
-                      <p className="text-xl text-white/90">
+                      <p className="text-base sm:text-lg md:text-xl text-white/90">
                         Computer chose to bat first!
                       </p>
                     )}
@@ -585,28 +607,28 @@ export default function HandCricket() {
                     initial={{ opacity: 0, scale: 0.8 }}
                     animate={{ opacity: 1, scale: 1 }}
                     transition={{ delay: 0.5 }}
-                    className="mt-8"
+                    className="mt-4 sm:mt-6 md:mt-8"
                   >
-                    <h3 className="text-3xl font-bold text-white mb-6 text-center">
+                    <h3 className="text-xl sm:text-2xl md:text-3xl font-bold text-white mb-4 sm:mb-6 text-center">
                       Choose Your Option
                     </h3>
-                    <div className="flex justify-center gap-6">
+                    <div className="flex flex-col sm:flex-row justify-center gap-3 sm:gap-4 md:gap-6">
                       <motion.button
                         whileHover={{ scale: 1.1, y: -5 }}
                         whileTap={{ scale: 0.9 }}
                         onClick={() => handlePlayerChoiceBattingBowling('bat')}
-                        className="bg-gradient-to-br from-green-500 to-emerald-600 text-white text-2xl font-bold rounded-2xl px-10 py-6 shadow-xl hover:shadow-2xl transition-all border-2 border-green-400"
+                        className="bg-gradient-to-br from-green-500 to-emerald-600 text-white text-lg sm:text-xl md:text-2xl font-bold rounded-xl sm:rounded-2xl px-6 sm:px-8 md:px-10 py-4 sm:py-5 md:py-6 shadow-xl hover:shadow-2xl transition-all border-2 border-green-400 w-full sm:w-auto"
                       >
-                        <div className="text-5xl mb-2">🏏</div>
+                        <div className="text-4xl sm:text-5xl mb-1 sm:mb-2">🏏</div>
                         <div>Bat First</div>
                       </motion.button>
                       <motion.button
                         whileHover={{ scale: 1.1, y: -5 }}
                         whileTap={{ scale: 0.9 }}
                         onClick={() => handlePlayerChoiceBattingBowling('bowl')}
-                        className="bg-gradient-to-br from-red-500 to-pink-600 text-white text-2xl font-bold rounded-2xl px-10 py-6 shadow-xl hover:shadow-2xl transition-all border-2 border-red-400"
+                        className="bg-gradient-to-br from-red-500 to-pink-600 text-white text-lg sm:text-xl md:text-2xl font-bold rounded-xl sm:rounded-2xl px-6 sm:px-8 md:px-10 py-4 sm:py-5 md:py-6 shadow-xl hover:shadow-2xl transition-all border-2 border-red-400 w-full sm:w-auto"
                       >
-                        <div className="text-5xl mb-2">🎯</div>
+                        <div className="text-4xl sm:text-5xl mb-1 sm:mb-2">🎯</div>
                         <div>Bowl First</div>
                       </motion.button>
                     </div>
@@ -623,24 +645,24 @@ export default function HandCricket() {
         <motion.div
           initial={{ opacity: 0, y: -50 }}
           animate={{ opacity: 1, y: 0 }}
-          className="bg-white/20 backdrop-blur-md rounded-3xl p-8 mb-8 shadow-2xl w-full max-w-4xl"
+          className="bg-white/20 backdrop-blur-md rounded-2xl sm:rounded-3xl p-4 sm:p-6 md:p-8 mb-4 sm:mb-6 md:mb-8 shadow-2xl w-full max-w-4xl relative z-10"
         >
-        <div className="grid grid-cols-2 gap-6 mb-4">
+        <div className="grid grid-cols-2 gap-3 sm:gap-4 md:gap-6 mb-3 sm:mb-4">
           <div className="text-center">
-            <h3 className="text-2xl font-bold text-white mb-2">You</h3>
+            <h3 className="text-lg sm:text-xl md:text-2xl font-bold text-white mb-1 sm:mb-2">You</h3>
             <motion.div
               key={playerScore}
               initial={{ scale: 0 }}
               animate={{ scale: 1 }}
-              className="text-6xl font-bold text-white"
+              className="text-4xl sm:text-5xl md:text-6xl font-bold text-white"
             >
               {playerScore}
             </motion.div>
-            <div className="text-white/80 mt-2">
+            <div className="text-white/80 mt-1 sm:mt-2">
               {playerRuns.length > 0 && (
-                <div className="flex flex-wrap gap-2 justify-center">
+                <div className="flex flex-wrap gap-1 sm:gap-2 justify-center">
                   {playerRuns.map((run, idx) => (
-                    <span key={idx} className="bg-white/30 px-2 py-1 rounded">
+                    <span key={idx} className="bg-white/30 px-1.5 sm:px-2 py-0.5 sm:py-1 rounded text-xs sm:text-sm">
                       {run}
                     </span>
                   ))}
@@ -649,20 +671,20 @@ export default function HandCricket() {
             </div>
           </div>
           <div className="text-center">
-            <h3 className="text-2xl font-bold text-white mb-2">Computer</h3>
+            <h3 className="text-lg sm:text-xl md:text-2xl font-bold text-white mb-1 sm:mb-2">Computer</h3>
             <motion.div
               key={computerScore}
               initial={{ scale: 0 }}
               animate={{ scale: 1 }}
-              className="text-6xl font-bold text-white"
+              className="text-4xl sm:text-5xl md:text-6xl font-bold text-white"
             >
               {computerScore}
             </motion.div>
-            <div className="text-white/80 mt-2">
+            <div className="text-white/80 mt-1 sm:mt-2">
               {computerRuns.length > 0 && (
-                <div className="flex flex-wrap gap-2 justify-center">
+                <div className="flex flex-wrap gap-1 sm:gap-2 justify-center">
                   {computerRuns.map((run, idx) => (
-                    <span key={idx} className="bg-white/30 px-2 py-1 rounded">
+                    <span key={idx} className="bg-white/30 px-1.5 sm:px-2 py-0.5 sm:py-1 rounded text-xs sm:text-sm">
                       {run}
                     </span>
                   ))}
@@ -677,7 +699,7 @@ export default function HandCricket() {
             initial={{ opacity: 0, scale: 0.8, y: -20 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
             transition={{ type: 'spring', stiffness: 200, damping: 15 }}
-            className="text-center mt-6"
+            className="text-center mt-3 sm:mt-4 md:mt-6"
           >
             <motion.div
               animate={{
@@ -692,21 +714,21 @@ export default function HandCricket() {
                 repeat: Infinity,
                 ease: 'easeInOut',
               }}
-              className="inline-flex items-center gap-3 bg-gradient-to-r from-yellow-400 via-orange-400 to-yellow-500 px-6 py-3 rounded-2xl border-2 border-yellow-300/50 shadow-2xl backdrop-blur-sm"
+              className="inline-flex items-center gap-2 sm:gap-3 bg-gradient-to-r from-yellow-400 via-orange-400 to-yellow-500 px-4 sm:px-5 md:px-6 py-2 sm:py-2.5 md:py-3 rounded-xl sm:rounded-2xl border-2 border-yellow-300/50 shadow-2xl backdrop-blur-sm"
             >
               <motion.div
                 animate={{ rotate: [0, 10, -10, 0] }}
                 transition={{ duration: 2, repeat: Infinity, repeatDelay: 1 }}
               >
-                <Target className="w-6 h-6 text-white drop-shadow-lg" />
+                <Target className="w-4 h-4 sm:w-5 sm:h-5 md:w-6 md:h-6 text-white drop-shadow-lg" />
               </motion.div>
-              <span className="text-sm font-semibold text-white/90 uppercase tracking-wider">
+              <span className="text-xs sm:text-sm font-semibold text-white/90 uppercase tracking-wider">
                 Target
               </span>
-              <span className="text-3xl font-black text-white drop-shadow-lg">
+              <span className="text-xl sm:text-2xl md:text-3xl font-black text-white drop-shadow-lg">
                 {target}
               </span>
-              <span className="text-sm font-semibold text-white/90">
+              <span className="text-xs sm:text-sm font-semibold text-white/90">
                 runs
               </span>
             </motion.div>
@@ -724,9 +746,9 @@ export default function HandCricket() {
             initial={{ opacity: 0, scale: 0.8 }}
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0, scale: 0.8 }}
-            className="text-center mb-8"
+            className="text-center mb-4 sm:mb-6 md:mb-8 relative z-10"
           >
-            <h2 className="text-4xl font-bold text-white mb-4 drop-shadow-lg">
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-white mb-2 sm:mb-3 md:mb-4 drop-shadow-lg px-2">
               Your Turn - Choose a Number!
             </h2>
           </motion.div>
@@ -738,12 +760,12 @@ export default function HandCricket() {
             initial={{ opacity: 0, scale: 0.8 }}
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0, scale: 0.8 }}
-            className="text-center mb-8"
+            className="text-center mb-4 sm:mb-6 md:mb-8 relative z-10"
           >
-            <h2 className="text-4xl font-bold text-white mb-4 drop-shadow-lg">
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-white mb-2 sm:mb-3 md:mb-4 drop-shadow-lg px-2">
               Your Turn to Bowl! 🎯
             </h2>
-            <p className="text-xl text-white/80">
+            <p className="text-base sm:text-lg md:text-xl text-white/80 px-2">
               Choose a number to bowl and try to get the computer out!
             </p>
           </motion.div>
@@ -754,7 +776,7 @@ export default function HandCricket() {
             key="out"
             initial={{ scale: 0 }}
             animate={{ scale: 1 }}
-            className="text-center mb-8"
+            className="text-center mb-4 sm:mb-6 md:mb-8 relative z-10"
           >
             {isDuckOut ? (
               <>
@@ -768,7 +790,7 @@ export default function HandCricket() {
                     repeat: Infinity,
                     ease: "easeInOut"
                   }}
-                  className="text-8xl mb-4"
+                  className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl mb-2 sm:mb-3 md:mb-4"
                 >
                   🦆
                 </motion.div>
@@ -778,14 +800,14 @@ export default function HandCricket() {
                     color: ["#fca5a5", "#ef4444", "#fca5a5"]
                   }}
                   transition={{ duration: 0.5, repeat: Infinity }}
-                  className="text-5xl font-bold text-red-200 mb-2 drop-shadow-lg"
+                  className="text-3xl sm:text-4xl md:text-5xl font-bold text-red-200 mb-1 sm:mb-2 drop-shadow-lg px-2"
                 >
                   DUCK OUT! 🦆
                 </motion.h2>
                 <motion.p
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
-                  className="text-2xl text-yellow-200 font-semibold"
+                  className="text-lg sm:text-xl md:text-2xl text-yellow-200 font-semibold px-2"
                 >
                   Walked back with 0 runs!
                 </motion.p>
@@ -795,11 +817,11 @@ export default function HandCricket() {
                 <motion.div
                   animate={{ rotate: [0, -10, 10, -10, 0] }}
                   transition={{ duration: 0.5 }}
-                  className="text-6xl mb-4"
+                  className="text-4xl sm:text-5xl md:text-6xl mb-2 sm:mb-3 md:mb-4"
                 >
                   ❌
                 </motion.div>
-                <h2 className="text-4xl font-bold text-red-200 mb-2 drop-shadow-lg">
+                <h2 className="text-3xl sm:text-3xl md:text-4xl font-bold text-red-200 mb-1 sm:mb-2 drop-shadow-lg">
                   OUT!
                 </h2>
               </>
@@ -814,17 +836,17 @@ export default function HandCricket() {
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className={`backdrop-blur-md rounded-2xl p-6 mb-8 text-center ${
+          className={`backdrop-blur-md rounded-xl sm:rounded-2xl p-3 sm:p-4 md:p-6 mb-4 sm:mb-6 md:mb-8 text-center w-full max-w-4xl relative z-10 ${
             showCelebration && (celebrationType === '4' || celebrationType === '6') 
-              ? 'bg-yellow-400/40 border-4 border-yellow-300' 
+              ? 'bg-yellow-400/40 border-2 sm:border-4 border-yellow-300' 
               : showCelebration && celebrationType === 'target'
-              ? 'bg-green-400/40 border-4 border-green-300'
+              ? 'bg-green-400/40 border-2 sm:border-4 border-green-300'
               : showCelebration && celebrationType === '50'
-              ? 'bg-yellow-400/40 border-4 border-yellow-300'
+              ? 'bg-yellow-400/40 border-2 sm:border-4 border-yellow-300'
               : 'bg-white/30'
           }`}
         >
-          <p className={`text-xl font-semibold ${
+          <p className={`text-sm sm:text-base md:text-lg lg:text-xl font-semibold px-2 ${
             showCelebration && (celebrationType === '4' || celebrationType === '6' || celebrationType === '50')
               ? 'text-yellow-100' 
               : showCelebration && celebrationType === 'target'
@@ -839,12 +861,12 @@ export default function HandCricket() {
         <motion.div
           initial={{ opacity: 0, y: 50 }}
           animate={{ opacity: 1, y: 0 }}
-          className={`grid gap-4 mb-8 w-full max-w-4xl ${
+          className={`grid gap-2 sm:gap-3 md:gap-4 mb-4 sm:mb-6 md:mb-8 w-full max-w-4xl px-2 sm:px-0 relative z-10 ${
             numbers.length <= 7 
-              ? 'grid-cols-4 md:grid-cols-7' 
+              ? 'grid-cols-4 sm:grid-cols-5 md:grid-cols-7' 
               : numbers.length <= 11
-              ? 'grid-cols-4 md:grid-cols-6'
-              : 'grid-cols-4 md:grid-cols-5'
+              ? 'grid-cols-4 sm:grid-cols-5 md:grid-cols-6'
+              : 'grid-cols-4 sm:grid-cols-5 md:grid-cols-5'
           }`}
         >
           {numbers.map((num) => (
@@ -853,7 +875,7 @@ export default function HandCricket() {
               whileHover={{ scale: 1.1, y: -5 }}
               whileTap={{ scale: 0.9 }}
               onClick={() => handlePlayerChoice(num)}
-              className="bg-white/30 backdrop-blur-md text-white text-4xl font-bold rounded-2xl p-8 shadow-xl hover:bg-white/40 transition-all aspect-square flex items-center justify-center"
+              className="bg-white/30 backdrop-blur-md text-white text-2xl sm:text-3xl md:text-4xl font-bold rounded-xl sm:rounded-2xl p-4 sm:p-5 md:p-6 lg:p-8 shadow-xl hover:bg-white/40 transition-all aspect-square flex items-center justify-center min-h-[60px] sm:min-h-[70px] md:min-h-[80px]"
             >
               {num}
             </motion.button>
@@ -866,12 +888,12 @@ export default function HandCricket() {
         <motion.div
           initial={{ opacity: 0, y: 50 }}
           animate={{ opacity: 1, y: 0 }}
-          className={`grid gap-4 mb-8 w-full max-w-4xl ${
+          className={`grid gap-2 sm:gap-3 md:gap-4 mb-4 sm:mb-6 md:mb-8 w-full max-w-4xl px-2 sm:px-0 relative z-10 ${
             numbers.length <= 7 
-              ? 'grid-cols-4 md:grid-cols-7' 
+              ? 'grid-cols-4 sm:grid-cols-5 md:grid-cols-7' 
               : numbers.length <= 11
-              ? 'grid-cols-4 md:grid-cols-6'
-              : 'grid-cols-4 md:grid-cols-5'
+              ? 'grid-cols-4 sm:grid-cols-5 md:grid-cols-6'
+              : 'grid-cols-4 sm:grid-cols-5 md:grid-cols-5'
           }`}
         >
           {numbers.map((num) => (
@@ -880,7 +902,7 @@ export default function HandCricket() {
               whileHover={{ scale: 1.1, y: -5 }}
               whileTap={{ scale: 0.9 }}
               onClick={() => handlePlayerBowling(num)}
-              className="bg-red-400/40 backdrop-blur-md text-white text-4xl font-bold rounded-2xl p-8 shadow-xl hover:bg-red-400/50 transition-all aspect-square flex items-center justify-center border-2 border-red-300/50"
+              className="bg-red-400/40 backdrop-blur-md text-white text-2xl sm:text-3xl md:text-4xl font-bold rounded-xl sm:rounded-2xl p-4 sm:p-5 md:p-6 lg:p-8 shadow-xl hover:bg-red-400/50 transition-all aspect-square flex items-center justify-center border-2 border-red-300/50 min-h-[60px] sm:min-h-[70px] md:min-h-[80px]"
             >
               {num}
             </motion.button>
@@ -893,18 +915,18 @@ export default function HandCricket() {
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          className="flex gap-12 mb-8"
+          className="flex flex-col sm:flex-row gap-4 sm:gap-6 md:gap-8 lg:gap-12 mb-4 sm:mb-6 md:mb-8 w-full max-w-4xl px-2 sm:px-0 relative z-10"
         >
           {selectedNumber !== null && (
             <motion.div
               initial={{ scale: 0, rotate: -180 }}
               animate={{ scale: 1, rotate: 0 }}
-              className="text-center"
+              className="text-center flex-1"
             >
-              <div className="text-6xl mb-2">
+              <div className="text-4xl sm:text-5xl md:text-6xl mb-1 sm:mb-2">
                 {gameState === 'player-bowling' || (gameState === 'waiting' && currentInnings === 'computer') ? '🎯' : '✋'}
               </div>
-              <div className="text-3xl font-bold text-white">
+              <div className="text-lg sm:text-xl md:text-2xl lg:text-3xl font-bold text-white px-2">
                 {gameState === 'player-bowling' || (gameState === 'waiting' && currentInnings === 'computer') 
                   ? `You bowled: ${selectedNumber}` 
                   : `You: ${selectedNumber}`}
@@ -915,10 +937,10 @@ export default function HandCricket() {
             <motion.div
               initial={{ scale: 0, rotate: 180 }}
               animate={{ scale: 1, rotate: 0 }}
-              className="text-center"
+              className="text-center flex-1"
             >
-              <div className="text-6xl mb-2">🤖</div>
-              <div className="text-3xl font-bold text-white">
+              <div className="text-4xl sm:text-5xl md:text-6xl mb-1 sm:mb-2">🤖</div>
+              <div className="text-lg sm:text-xl md:text-2xl lg:text-3xl font-bold text-white px-2">
                 {gameState === 'player-bowling' || (gameState === 'waiting' && currentInnings === 'computer')
                   ? `Comp batted: ${computerChoice}`
                   : `Comp: ${computerChoice}`}
@@ -1031,7 +1053,7 @@ export default function HandCricket() {
                   duration: 0.3,
                   repeat: 3
                 }}
-                className="text-9xl font-black text-red-500 drop-shadow-2xl"
+                className="text-5xl sm:text-6xl md:text-7xl lg:text-9xl font-black text-red-500 drop-shadow-2xl px-2"
                 style={{ textShadow: '0 0 30px rgba(239, 68, 68, 0.8)' }}
               >
                 OUT!
@@ -1072,7 +1094,7 @@ export default function HandCricket() {
                   duration: 0.8,
                   repeat: 1
                 }}
-                className="text-9xl mb-4 drop-shadow-2xl"
+                className="text-6xl sm:text-7xl md:text-8xl lg:text-9xl mb-2 sm:mb-3 md:mb-4 drop-shadow-2xl"
               >
                 {celebrationType === '4' ? '4️⃣' : '6️⃣'}
               </motion.div>
@@ -1084,7 +1106,7 @@ export default function HandCricket() {
                   duration: 0.5,
                   repeat: 2
                 }}
-                className={`text-8xl font-black drop-shadow-2xl ${
+                className={`text-4xl sm:text-5xl md:text-6xl lg:text-8xl font-black drop-shadow-2xl px-2 ${
                   celebrationType === '4' ? 'text-blue-300' : 'text-yellow-300'
                 }`}
               >
@@ -1099,7 +1121,7 @@ export default function HandCricket() {
                   duration: 1,
                   delay: 0.3
                 }}
-                className="text-6xl mt-4"
+                className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl mt-2 sm:mt-3 md:mt-4"
               >
                 🎉🎊🎉
               </motion.div>
@@ -1137,7 +1159,7 @@ export default function HandCricket() {
                   duration: 0.6,
                   repeat: 1
                 }}
-                className="text-8xl mb-4"
+                className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl mb-2 sm:mb-3 md:mb-4"
               >
                 🎯
               </motion.div>
@@ -1149,7 +1171,7 @@ export default function HandCricket() {
                   duration: 0.4,
                   repeat: 3
                 }}
-                className="text-8xl font-black drop-shadow-2xl text-yellow-200 mb-2"
+                className="text-4xl sm:text-5xl md:text-6xl lg:text-8xl font-black drop-shadow-2xl text-yellow-200 mb-1 sm:mb-2 px-2"
               >
                 {milestoneValue} RUNS!
               </motion.h1>
@@ -1162,7 +1184,7 @@ export default function HandCricket() {
                   repeat: 3,
                   delay: 0.1
                 }}
-                className="text-6xl font-bold drop-shadow-xl text-yellow-100 mb-4"
+                className="text-2xl sm:text-3xl md:text-4xl lg:text-6xl font-bold drop-shadow-xl text-yellow-100 mb-2 sm:mb-3 md:mb-4 px-2"
               >
                 {milestoneValue === 50 ? 'HALF CENTURY!' : milestoneValue === 100 ? 'CENTURY!' : 'MILESTONE!'}
               </motion.h2>
@@ -1175,7 +1197,7 @@ export default function HandCricket() {
                   duration: 1,
                   delay: 0.2
                 }}
-                className="text-5xl mt-4"
+                className="text-3xl sm:text-4xl md:text-5xl mt-2 sm:mt-3 md:mt-4"
               >
                 🏆⭐🏆
               </motion.div>
@@ -1213,7 +1235,7 @@ export default function HandCricket() {
                   duration: 0.7,
                   repeat: 1
                 }}
-                className="text-9xl mb-4"
+                className="text-6xl sm:text-7xl md:text-8xl lg:text-9xl mb-2 sm:mb-3 md:mb-4"
               >
                 🎯
               </motion.div>
@@ -1225,7 +1247,7 @@ export default function HandCricket() {
                   duration: 0.5,
                   repeat: 3
                 }}
-                className="text-7xl font-black drop-shadow-2xl text-green-200"
+                className="text-3xl sm:text-4xl md:text-5xl lg:text-7xl font-black drop-shadow-2xl text-green-200 px-2"
               >
                 TARGET REACHED!
               </motion.h1>
@@ -1238,7 +1260,7 @@ export default function HandCricket() {
                   duration: 1,
                   delay: 0.3
                 }}
-                className="text-6xl mt-4"
+                className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl mt-2 sm:mt-3 md:mt-4"
               >
                 🎉🎊🎉
               </motion.div>
@@ -1347,16 +1369,16 @@ export default function HandCricket() {
             initial={{ opacity: 0, scale: 0.5 }}
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0, scale: 0.5 }}
-            className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50"
+            className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4"
           >
             <motion.div
               initial={{ y: 50 }}
               animate={{ y: 0 }}
-              className={`bg-gradient-to-br rounded-3xl p-12 text-center shadow-2xl max-w-md mx-4 ${
+              className={`bg-gradient-to-br rounded-2xl sm:rounded-3xl p-6 sm:p-8 md:p-10 lg:p-12 text-center shadow-2xl max-w-md w-full mx-2 sm:mx-4 ${
                 winner === 'player' 
-                  ? 'from-yellow-400 to-orange-500 border-4 border-yellow-300' 
+                  ? 'from-yellow-400 to-orange-500 border-2 sm:border-4 border-yellow-300' 
                   : winner === 'computer'
-                  ? 'from-gray-400 to-gray-600 border-4 border-gray-500'
+                  ? 'from-gray-400 to-gray-600 border-2 sm:border-4 border-gray-500'
                   : 'from-blue-400 to-purple-500'
               }`}
             >
@@ -1371,7 +1393,7 @@ export default function HandCricket() {
                     repeat: Infinity,
                     repeatDelay: 0.5
                   }}
-                  className="text-8xl mb-6"
+                  className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl mb-3 sm:mb-4 md:mb-6"
                 >
                   🏆
                 </motion.div>
@@ -1386,7 +1408,7 @@ export default function HandCricket() {
                     duration: 1,
                     repeat: Infinity
                   }}
-                  className="text-8xl mb-6"
+                  className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl mb-3 sm:mb-4 md:mb-6"
                 >
                   😔
                 </motion.div>
@@ -1401,7 +1423,7 @@ export default function HandCricket() {
                     rotate: { duration: 2, repeat: Infinity, ease: 'linear' },
                     scale: { duration: 1, repeat: Infinity }
                   }}
-                  className="text-8xl mb-6"
+                  className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl mb-3 sm:mb-4 md:mb-6"
                 >
                   🤝
                 </motion.div>
@@ -1410,7 +1432,7 @@ export default function HandCricket() {
                 initial={{ y: -20, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
                 transition={{ delay: 0.2 }}
-                className={`text-5xl font-bold mb-4 ${
+                className={`text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-3 sm:mb-4 px-2 ${
                   winner === 'player' ? 'text-yellow-100' : winner === 'computer' ? 'text-gray-100' : 'text-white'
                 }`}
               >
@@ -1420,7 +1442,7 @@ export default function HandCricket() {
                 initial={{ y: 20, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
                 transition={{ delay: 0.3 }}
-                className="text-2xl text-white/90 mb-8"
+                className="text-base sm:text-lg md:text-xl lg:text-2xl text-white/90 mb-4 sm:mb-6 md:mb-8 px-2"
               >
                 Final Score: You {playerScore} - {computerScore} Computer
               </motion.p>
@@ -1429,7 +1451,7 @@ export default function HandCricket() {
                   initial={{ scale: 0 }}
                   animate={{ scale: 1 }}
                   transition={{ delay: 0.4, type: "spring" }}
-                  className="text-4xl mb-4"
+                  className="text-2xl sm:text-3xl md:text-4xl mb-3 sm:mb-4"
                 >
                   🎊🎉🎊
                 </motion.div>
@@ -1438,9 +1460,9 @@ export default function HandCricket() {
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
                 onClick={resetGame}
-                className="bg-white text-green-600 px-8 py-4 rounded-full font-bold text-xl shadow-lg flex items-center gap-2 mx-auto"
+                className="bg-white text-green-600 px-6 sm:px-8 py-3 sm:py-4 rounded-full font-bold text-base sm:text-lg md:text-xl shadow-lg flex items-center gap-2 mx-auto w-full sm:w-auto justify-center"
               >
-                <RotateCcw className="w-6 h-6" />
+                <RotateCcw className="w-5 h-5 sm:w-6 sm:h-6" />
                 Play Again
               </motion.button>
             </motion.div>
@@ -1454,9 +1476,9 @@ export default function HandCricket() {
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
           onClick={resetGame}
-          className="bg-white/20 backdrop-blur-md text-white px-6 py-3 rounded-full font-semibold flex items-center gap-2 hover:bg-white/30 transition-all shadow-lg"
+          className="bg-white/20 backdrop-blur-md text-white px-4 sm:px-6 py-2 sm:py-3 rounded-full font-semibold text-sm sm:text-base flex items-center gap-2 hover:bg-white/30 transition-all shadow-lg relative z-10"
         >
-          <RotateCcw className="w-5 h-5" />
+          <RotateCcw className="w-4 h-4 sm:w-5 sm:h-5" />
           Reset Game
         </motion.button>
       )}
